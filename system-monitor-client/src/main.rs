@@ -6,7 +6,7 @@ fn main() -> std::io::Result<()> {
 
     fs::file_operations::read_file();
 
-    network::connection::start_server().expect("Server errro");
+    network::connection::start_server().expect("Server error");
 
     Ok(())
 }
