@@ -1,12 +1,12 @@
-mod fs;
-mod network;
+use network::connection::start_server;
+
+pub mod fs;
+pub mod network;
 
 fn main() -> std::io::Result<()> {
     println!("### System Monitor Client ###");
 
-    fs::file_operations::read_file();
-
-    network::connection::start_server().expect("Server error");
+    start_server().expect("Server error");
 
     Ok(())
 }
