@@ -1,18 +1,12 @@
-use crate::fs::average_load;
+use network::connection::start_server;
 
-mod fs;
-mod network;
+pub mod fs;
+pub mod network;
 
 fn main() -> std::io::Result<()> {
     println!("### System Monitor Client ###");
 
-    // fs::file_operations::read_file();
-
-    // network::connection::start_server().expect("Server error");
-
-    let aver_load = fs::average_load::get_average_load();
-    println!("Average load: {aver_load}");
-
+    start_server().expect("Server error");
 
     Ok(())
 }

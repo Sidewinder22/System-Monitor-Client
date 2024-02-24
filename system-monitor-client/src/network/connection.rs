@@ -1,9 +1,12 @@
-use std::io::{self, Read, Write};
+use std::io::{self, Write};
 use std::net::{TcpStream, TcpListener};
+use std::time::Duration;
+use std::thread::sleep;
+use crate::fs::average_load::get_average_load;
 
 const IP : &str = "127.0.0.1";
 const PORT : u32 = 9999;
-const MESSAGE_SIZE: usize = 1024;
+const DELAY: u64 = 5;
 
 pub fn start_server() -> io::Result<()> {
     let connection_settings = format!("{}:{}", IP, PORT.to_string());
@@ -28,17 +31,21 @@ pub fn start_server() -> io::Result<()> {
 fn handle_connection(mut stream: TcpStream) -> io::Result<()> {
     println!("Client connected.");
 
-    stream
-        .write(b"Hello from the Rust client!")
-        .expect("Error during write to socket!");
+    loop {
+        let aver_load = get_average_load();
 
-    let mut received_bytes = [0u8; MESSAGE_SIZE];
-    stream
-        .read(&mut received_bytes)
-        .expect("Error during read from socket!");
+        let result = stream
+            .write(aver_load.as_bytes());
+        match result {
+            Ok(_) => {},
+            Err(e) => {
+                println!("Error during write to socket: {e}");
+                break;
+            }
+        }
 
-    let received_data = std::str::from_utf8(&received_bytes).expect("valid utf8");
-    println!("{}", received_data);
+        sleep(Duration::new(DELAY, 0));
+    }
 
     println!("Client disconnected, bye!");
     Ok(())
