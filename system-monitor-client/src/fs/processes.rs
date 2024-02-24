@@ -3,7 +3,7 @@ use crate::fs::process_info::{ProcessInfo, ProcessState};
 
 pub fn read_file() {
 
-    let path = "/proc/1681/status";
+    let path = "/proc/5195/status";
 
     let content = fs::read_to_string(path).expect("Can't read file!");
     let lines = content.split('\n');
