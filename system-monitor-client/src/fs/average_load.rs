@@ -1,14 +1,11 @@
 use crate::fs::reader::read_file;
 
+const AVERAGE_LOAD_PATH : &str = "/proc/loadavg";
+
 pub fn get_average_load() -> String {
-    let aver_load_path = String::from("/proc/loadavg");
-
-    let mut aver_load = read_file(&aver_load_path);
-    aver_load.pop();    // remove \n 
+    let mut aver_load = read_file(AVERAGE_LOAD_PATH);
     
-    let mut message = String::from("Average load: ");
-    message.push_str(&aver_load);
-    message.push_str(" END_MESSAGE");
-
-    message
+    aver_load.pop(); // remove \n char
+    
+    format!("AVERAGE_LOAD: {} END", aver_load)
 }
