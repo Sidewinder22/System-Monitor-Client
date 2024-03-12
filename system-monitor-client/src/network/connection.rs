@@ -36,8 +36,9 @@ fn handle_connection(mut stream: TcpStream) -> io::Result<()> {
         let aver_load = get_average_load();
         let cpu_aver_load = get_cpu_average_load();
 
-        let mut message : String;
+        let mut message : String = Default::default();
         message.push_str(&aver_load);
+        message.push_str("\n");
         message.push_str(&cpu_aver_load);
 
         let result = stream

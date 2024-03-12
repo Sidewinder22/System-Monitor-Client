@@ -1,10 +1,10 @@
-use core::num;
+// use core::num;
 
 use crate::fs::reader::read_file;
 
 const PROC_STAT_PATH : &str = "/proc/stat";
 
-let mut work : f64;
+// let mut work : f64;
 
 pub struct CpuLoadStates {
     user : u32,
@@ -13,7 +13,7 @@ pub struct CpuLoadStates {
     idle : u32,
     iowait : u32,
     irq : u32,
-    softirr : u32,
+    softirq : u32,
     steal : u32,
     guest : u32,
     guest_nice : u32,
@@ -67,7 +67,7 @@ fn get_cpu_average_load_line() -> String {
 fn parse_cpu_load_line(line: &str) -> CpuLoadStates {
     let parts : Vec<&str> = line.split(" ").collect();
 
-    let mut numbers : Vec<i32> = Vec::new();
+    let mut numbers : Vec<u32> = Vec::new();
     for part in parts {
         numbers.push(part.parse().unwrap());
     }
