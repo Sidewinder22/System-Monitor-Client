@@ -2,8 +2,9 @@ use std::io::{self, Write};
 use std::net::{TcpStream, TcpListener};
 use std::time::Duration;
 use std::thread::sleep;
-use crate::fs::average_load::get_average_load;
-use crate::fs::cpu_average_load::CpuAverageLoad;
+
+use crate::fs::load::average_load::get_average_load;
+use crate::fs::load::cpu_average_load::CpuAverageLoad;
 
 const IP : &str = "127.0.0.1";
 const PORT : u32 = 9999;
