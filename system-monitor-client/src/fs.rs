@@ -1,7 +1,4 @@
-pub mod average_load;
-pub mod cpu_average_load;
-pub mod processes;
+pub mod load;
+pub mod process;
 
-mod cpu_load;
-mod process_info;
 mod reader;
