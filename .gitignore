@@ -15,3 +15,6 @@ target/
 
 # VSC
 .vscode
+
+# Rust Rover
+*.idea
