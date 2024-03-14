@@ -3,6 +3,7 @@ use std::net::{TcpStream, TcpListener};
 use std::time::Duration;
 use std::thread::sleep;
 use crate::fs::average_load::get_average_load;
+use crate::fs::cpu_average_load::CpuAverageLoad;
 
 const IP : &str = "127.0.0.1";
 const PORT : u32 = 9999;
@@ -31,11 +32,19 @@ pub fn start_server() -> io::Result<()> {
 fn handle_connection(mut stream: TcpStream) -> io::Result<()> {
     println!("Client connected.");
 
+    let mut cpu_average_load = CpuAverageLoad::new();
+
     loop {
         let aver_load = get_average_load();
+        let cpu_aver_load = cpu_average_load.get_cpu_average_load();
+
+        let mut message : String = Default::default();
+        message.push_str(&aver_load);
+        message.push_str("\n");
+        message.push_str(&cpu_aver_load);
 
         let result = stream
-            .write(aver_load.as_bytes());
+            .write(message.as_bytes());
         match result {
             Ok(_) => {},
             Err(e) => {
