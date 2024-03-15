@@ -98,7 +98,7 @@ mod tests {
     use super::*;
 
     #[test]
-    fn parse_cpu_load_line_test() {
+    fn correct_parse_cpu_load_line() {
         let line = "161125 26065 51891 10993268 7731 11249 2827 0 0 0";
         let cpu_load_state = parse_cpu_load_line(line);
 
