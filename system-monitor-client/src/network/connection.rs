@@ -5,6 +5,7 @@ use std::thread::sleep;
 
 use crate::fs::load::average_load::get_average_load;
 use crate::fs::load::cpu_average_load::CpuAverageLoad;
+use crate::fs::process::process_paths::get_paths;
 
 const IP : &str = "127.0.0.1";
 const PORT : u32 = 9999;
@@ -39,10 +40,24 @@ fn handle_connection(mut stream: TcpStream) -> io::Result<()> {
         let aver_load = get_average_load();
         let cpu_aver_load = cpu_average_load.get_cpu_average_load();
 
+
         let mut message : String = Default::default();
         message.push_str(&aver_load);
         message.push_str("\n");
         message.push_str(&cpu_aver_load);
+
+        let paths = get_paths().expect("Problem with paths preparing");
+        let mut counter = 0;
+
+        for path in paths {
+            if counter == 10 {
+                break;
+            }
+
+            message.push_str("\n");
+            message.push_str(path.to_str().expect("Problem with path!"));
+            counter = counter + 1;
+        }
 
         let result = stream
             .write(message.as_bytes());
