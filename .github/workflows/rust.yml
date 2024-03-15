@@ -16,9 +16,7 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
-    - name: Cd system-monitor-client
-      run: cd system-monitor-client
     - name: Build
-      run: cargo build --verbose
+      run: cd system-monitor-client && cargo build --verbose
     - name: Run tests
-      run: cargo test --verbose
+      run: cd system-monitor-client && cargo test --verbose
