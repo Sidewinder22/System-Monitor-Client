@@ -1,4 +1,4 @@
 pub mod processes;
-pub mod process_paths;
+pub mod paths;
 
-mod process_info;
+mod info;
