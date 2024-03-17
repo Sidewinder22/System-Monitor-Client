@@ -1,5 +1,5 @@
 use std::fs;
-use crate::fs::process::process_info::{ProcessInfo, ProcessState};
+use crate::fs::process::info::{ProcessInfo, ProcessState};
 
 pub fn read_file() {
 

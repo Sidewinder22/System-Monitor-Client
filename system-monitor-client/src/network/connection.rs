@@ -5,7 +5,7 @@ use std::thread::sleep;
 
 use crate::fs::load::average_load::get_average_load;
 use crate::fs::load::cpu_average_load::CpuAverageLoad;
-use crate::fs::process::process_paths::get_paths;
+use crate::fs::process::paths::get_paths;
 
 const IP : &str = "127.0.0.1";
 const PORT : u32 = 9999;
