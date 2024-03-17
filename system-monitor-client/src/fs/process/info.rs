@@ -1,3 +1,5 @@
+use std::str::FromStr;
+
 pub struct ProcessInfo {
     pub pid: u32,
     pub name: String,
@@ -5,6 +7,7 @@ pub struct ProcessInfo {
     pub threads: u32,
 }
 
+#[derive(PartialEq, Debug)]
 pub enum ProcessState {
     R,	// Running
     S,	// Sleeping in an interruptible wait
@@ -16,4 +19,23 @@ pub enum ProcessState {
     I,  // Idle
 
     Unknown,  // Unknow
+}
+
+impl FromStr for ProcessState {
+
+    type Err = ();
+
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "R" => Ok(ProcessState::R),
+            "S" => Ok(ProcessState::S),
+            "D" => Ok(ProcessState::D),
+            "Z" => Ok(ProcessState::Z),
+            "T" => Ok(ProcessState::T),
+            "t" => Ok(ProcessState::t),
+            "X" => Ok(ProcessState::X),
+            "I" => Ok(ProcessState::I),
+            _   => Err(())
+        }
+    }
 }
