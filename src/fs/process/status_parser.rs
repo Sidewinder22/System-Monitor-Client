@@ -3,7 +3,8 @@ use std::{collections::HashSet, str::FromStr};
 use lazy_static::lazy_static;
 use regex::Regex;
 
-use crate::fs::process::info::{ProcessInfo, ProcessState};
+use crate::fs::process::info::ProcessInfo;
+use crate::fs::process::state::ProcessState;
 
 const STATE_LINE_SPLIT_POINT: usize = 7;
 const NUMBER_REGEX_STR: &str = r"[0-9]*$";
