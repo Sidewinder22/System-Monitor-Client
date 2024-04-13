@@ -1,4 +1,4 @@
-pub mod load;
+pub mod cpu;
 pub mod process;
 
 mod reader;

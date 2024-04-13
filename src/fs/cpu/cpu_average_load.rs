@@ -1,4 +1,4 @@
-use crate::fs::load::cpu_load::CpuLoad;
+use crate::fs::cpu::cpu_load::CpuLoad;
 use crate::fs::reader::read_file;
 
 const PROC_STAT_PATH: &str = "/proc/stat";

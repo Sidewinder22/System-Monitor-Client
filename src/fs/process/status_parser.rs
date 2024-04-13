@@ -3,7 +3,7 @@ use std::{collections::HashSet, str::FromStr};
 use lazy_static::lazy_static;
 use regex::Regex;
 
-use crate::fs::process::info::ProcessInfo;
+use crate::fs::process::status::ProcessStatus;
 use crate::fs::process::state::ProcessState;
 
 const STATE_LINE_SPLIT_POINT: usize = 7;
@@ -17,7 +17,7 @@ lazy_static! {
     static ref STATE_REGEX: Regex = Regex::new(STATE_REGEX_STR).unwrap();
 }
 
-pub fn parse(lines: &[String]) -> ProcessInfo {
+pub fn parse(lines: &[String]) -> ProcessStatus {
 
     let mut pid: Option<u32> = None;
     let mut name: Option<String> = None;
@@ -47,7 +47,7 @@ pub fn parse(lines: &[String]) -> ProcessInfo {
             }
     }
 
-    ProcessInfo {
+    ProcessStatus {
         pid: pid.expect("Wrong pid!"),
         name: name.expect("Wrong name!"),
         state: state.expect("Wrong state!"),
