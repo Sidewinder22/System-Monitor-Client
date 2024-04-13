@@ -1,12 +1,5 @@
 use std::str::FromStr;
 
-pub struct ProcessInfo {
-    pub pid: u32,
-    pub name: String,
-    pub state: ProcessState,
-    pub threads: u32,
-}
-
 #[derive(PartialEq, Debug)]
 pub enum ProcessState {
     R,	// Running

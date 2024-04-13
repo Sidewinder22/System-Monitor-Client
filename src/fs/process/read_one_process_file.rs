@@ -1,5 +1,6 @@
 use std::fs;
-use crate::fs::process::info::{ProcessInfo, ProcessState};
+use crate::fs::process::status::ProcessStatus;
+use crate::fs::process::state::ProcessState;
 
 pub fn read_file() {
 
@@ -8,7 +9,7 @@ pub fn read_file() {
     let content = fs::read_to_string(path).expect("Can't read file!");
     let lines = content.split('\n');
 
-    let mut process_info = ProcessInfo {
+    let mut process_info = ProcessStatus {
         pid: 0,
         name: String::from("Name"),
         state: ProcessState::Unknown,
