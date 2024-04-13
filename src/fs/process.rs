@@ -1,7 +1,7 @@
 pub mod read_one_process_file;
 pub mod paths;
 
-mod load;
+mod cpu_load;
 mod stat;
 mod state;
 mod status;
