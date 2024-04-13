@@ -2,11 +2,15 @@ use std::str::FromStr;
 
 use crate::fs::process::stat::ProcessStat;
 use crate::fs::process::state::ProcessState;
+use crate::tools::system::get_clk_tck;
 
 pub fn parse(line: &str) -> ProcessStat {
 
     let mut fields : Vec<&str> = vec![];
     line.split(' ').by_ref().for_each(|value| fields.push(value));
+
+    let clk_tck = get_clk_tck();
+    println!("CLK_TCK = {clk_tck}");
 
     ProcessStat {
         pid: fields[0].parse::<u32>().unwrap(),
@@ -39,4 +43,5 @@ mod tests {
         assert_eq!(stat.state, ProcessState::S);
         assert_eq!(stat.vsize, 1294336);
     }
+
 }
