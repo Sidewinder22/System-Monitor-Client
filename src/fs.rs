@@ -1,4 +1,3 @@
 pub mod cpu;
 pub mod process;
-
-mod reader;
+pub mod reader;
