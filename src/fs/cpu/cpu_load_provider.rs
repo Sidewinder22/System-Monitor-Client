@@ -3,13 +3,13 @@ use crate::fs::reader::read_file;
 
 const PROC_STAT_PATH: &str = "/proc/stat";
 
-pub struct CpuAverageLoad {
+pub struct CpuLoadProvider {
     previous_cpu_load: CpuLoad,
 }
 
-impl CpuAverageLoad {
-    pub fn new() -> CpuAverageLoad {
-        CpuAverageLoad {
+impl CpuLoadProvider {
+    pub fn new() -> CpuLoadProvider {
+        CpuLoadProvider {
             previous_cpu_load: CpuLoad {
                 user: 0,
                 nice: 0,
@@ -43,19 +43,17 @@ impl CpuAverageLoad {
 
         format!("CPU_AVERAGE_LOAD: {} END", cpu_utilization)
     }
+
+    pub fn get_total_cpu_work() -> u64 {
+        let line = get_cpu_average_load_line();
+        let cpu_load = parse_cpu_load_line(&line);
+
+        calculate_total_work(&cpu_load)
+    }
 }
 
 fn calculate_total_work(cpu_load: &CpuLoad) -> u64 {
-    cpu_load.user
-        + cpu_load.nice
-        + cpu_load.system
-        + cpu_load.idle
-        + cpu_load.iowait
-        + cpu_load.irq
-        + cpu_load.softirq
-        + cpu_load.steal
-        + cpu_load.guest
-        + cpu_load.guest_nice
+    cpu_load.user + cpu_load.nice + cpu_load.system + cpu_load.idle
 }
 
 fn get_cpu_average_load_line() -> String {
