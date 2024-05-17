@@ -4,12 +4,15 @@ use std::time::Duration;
 use std::thread::sleep;
 
 use crate::fs::cpu::average_load::get_average_load;
-use crate::fs::cpu::cpu_average_load::CpuAverageLoad;
+use crate::fs::cpu::cpu_load_provider::CpuLoadProvider;
 use crate::fs::process::paths::get_paths;
+
+use crate::fs::process::cpu_load::ProcessCpuLoad;
 
 const IP : &str = "127.0.0.1";
 const PORT : u32 = 9999;
-const DELAY: u64 = 5;
+// const DELAY: u64 = 5;
+const DELAY: u64 = 1;
 
 pub fn start_server() -> io::Result<()> {
     let connection_settings = format!("{}:{}", IP, PORT.to_string());
@@ -34,14 +37,19 @@ pub fn start_server() -> io::Result<()> {
 fn handle_connection(mut stream: TcpStream) -> io::Result<()> {
     println!("Client connected.");
 
-    let mut cpu_average_load = CpuAverageLoad::new();
+    let mut cpu_average_load = CpuLoadProvider::new();
+    let mut process_cpu_load = ProcessCpuLoad::new();
 
     loop {
         let aver_load = get_average_load();
         let cpu_aver_load = cpu_average_load.get_cpu_average_load();
 
+        let process_cpu_load = process_cpu_load.get_process_load(1198);
 
         let mut message : String = Default::default();
+        message.push_str("Process load: ");
+        message.push_str(&process_cpu_load.to_string());
+        message.push_str("\n");
         message.push_str(&aver_load);
         message.push_str("\n");
         message.push_str(&cpu_aver_load);
