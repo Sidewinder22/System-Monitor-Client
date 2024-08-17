@@ -1,9 +1,9 @@
 pub mod read_one_process_file;
 pub mod paths;
 
-// Temporary change for connection.rs access
-// mod cpu_load;
-pub mod cpu_load;
+pub mod process_load_calculator;
+pub mod service;
+mod info;
 mod stat;
 mod state;
 mod status;
