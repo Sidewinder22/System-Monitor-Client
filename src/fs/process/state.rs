@@ -28,7 +28,7 @@ impl FromStr for ProcessState {
             "t" => Ok(ProcessState::t),
             "X" => Ok(ProcessState::X),
             "I" => Ok(ProcessState::I),
-            _   => Err(())
+            _   => Ok(ProcessState::Unknown),
         }
     }
 }

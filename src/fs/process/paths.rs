@@ -4,7 +4,7 @@ use regex::Regex;
 use lazy_static::lazy_static;
 
 const DIR_REGEX: &str = r"[0-9]";
-const STATUS: &str = "status";
+const STAT: &str = "stat";
 
 lazy_static! {
     static ref RE: Regex = Regex::new(DIR_REGEX).unwrap();
@@ -22,7 +22,7 @@ pub fn get_paths() -> io::Result<Vec<PathBuf>> {
     for path in entries {
 
         if is_process_dir(&path) {
-            let full_path = path.join(STATUS);
+            let full_path = path.join(STAT);
             paths.push(full_path);
         }
     }

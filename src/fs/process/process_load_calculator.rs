@@ -1,19 +1,19 @@
-use core::num;
+use std::path::PathBuf;
 
 use crate::fs::reader::read_file;
 use crate::fs::process::stat_parser;
 use crate::fs::cpu::cpu_load_provider::CpuLoadProvider;
 
-pub struct ProcessCpuLoad {
+pub struct ProcessLoadCalculator {
     previous_utime: u64,
     previous_stime: u64,
     previous_total_cpu_work: u64,
     num_of_cores: usize,
 }
 
-impl ProcessCpuLoad {
-    pub fn new() -> ProcessCpuLoad {
-        ProcessCpuLoad {
+impl ProcessLoadCalculator {
+    pub fn new() -> ProcessLoadCalculator {
+        ProcessLoadCalculator {
             previous_utime: 0,
             previous_stime: 0,
             previous_total_cpu_work: 0,
@@ -21,12 +21,16 @@ impl ProcessCpuLoad {
         }
     }
     
-    pub fn get_process_load(&mut self, pid : u32) -> f64 {
+    pub fn get_process_load(&mut self, path : &PathBuf) -> f64 {
+
+        let line = read_file(&path.display().to_string());
+        if line.is_empty() {
+            return 0.0
+        }
+
+        let stat = stat_parser::parse(&line);
 
         let total_cpu_work = CpuLoadProvider::get_total_cpu_work();
-        let path = format!("/proc/{}/stat", pid);
-        let stat = stat_parser::parse(&read_file(&path));
-
         let time_diff = total_cpu_work - self.previous_total_cpu_work;
         let utime = 100.0 * (stat.utime - self.previous_utime) as f64 / time_diff as f64;
         let stime = 100.0 * (stat.stime - self.previous_stime) as f64 / time_diff as f64;

@@ -1,5 +1,12 @@
 use std::fs;
 
 pub fn read_file(path: &str) -> String {
-    fs::read_to_string(path).expect("Can't read file: {path}!")
+
+    match fs::read_to_string(path) {
+        Ok(content) => { return content },
+        Err(e) => {
+            println!("Path: {path}, Error: {e}");
+            return String::from("");
+        }
+    }
 }

@@ -3,16 +3,11 @@ use std::net::{TcpStream, TcpListener};
 use std::time::Duration;
 use std::thread::sleep;
 
-use crate::fs::cpu::average_load::get_average_load;
-use crate::fs::cpu::cpu_load_provider::CpuLoadProvider;
-use crate::fs::process::paths::get_paths;
-
-use crate::fs::process::cpu_load::ProcessCpuLoad;
+use crate::fs::process::service::get_info_about_processes;
 
 const IP : &str = "127.0.0.1";
 const PORT : u32 = 9999;
-// const DELAY: u64 = 5;
-const DELAY: u64 = 1;
+const DELAY: u64 = 2;
 
 pub fn start_server() -> io::Result<()> {
     let connection_settings = format!("{}:{}", IP, PORT.to_string());
@@ -35,40 +30,14 @@ pub fn start_server() -> io::Result<()> {
 }
 
 fn handle_connection(mut stream: TcpStream) -> io::Result<()> {
-    println!("Client connected.");
 
-    let mut cpu_average_load = CpuLoadProvider::new();
-    let mut process_cpu_load = ProcessCpuLoad::new();
+    println!("Client connected, hello!");
 
     loop {
-        let aver_load = get_average_load();
-        let cpu_aver_load = cpu_average_load.get_cpu_average_load();
-
-        let process_cpu_load = process_cpu_load.get_process_load(1198);
-
-        let mut message : String = Default::default();
-        message.push_str("Process load: ");
-        message.push_str(&process_cpu_load.to_string());
-        message.push_str("\n");
-        message.push_str(&aver_load);
-        message.push_str("\n");
-        message.push_str(&cpu_aver_load);
-
-        let paths = get_paths().expect("Problem with paths preparing");
-        let mut counter = 0;
-
-        for path in paths {
-            if counter == 10 {
-                break;
-            }
-
-            message.push_str("\n");
-            message.push_str(path.to_str().expect("Problem with path!"));
-            counter = counter + 1;
-        }
+        let info = get_info_about_processes();
 
         let result = stream
-            .write(message.as_bytes());
+            .write(info.as_bytes());
         match result {
             Ok(_) => {},
             Err(e) => {
