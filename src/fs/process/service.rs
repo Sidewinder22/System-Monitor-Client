@@ -1,8 +1,13 @@
 use std::collections::HashMap;
 use std::path::PathBuf;
 
+use crate::fs::reader::read_file;
+
 use super::process_load_calculator::ProcessLoadCalculator;
 use super::paths::get_paths;
+use super::state::process_state_to_str;
+use super::status::ProcessStatus;
+use super::status_parser;
 
 const LOAD_TRESHOLD : f64 = 0.5;
 
@@ -12,10 +17,20 @@ pub fn get_info_about_processes() -> String {
     let process_data = get_processes();
 
     for data in process_data {
-        message.push_str("Path: ");
-        message.push_str(&data.0.display().to_string());
-        message.push_str(", cpu load: ");
-        message.push_str(&data.1.to_string());
+        let cpu_load = data.1.to_string();
+
+        let process_status = get_process_status(data.0.display().to_string());
+
+        message.push_str("[");
+        message.push_str(&process_status.pid.to_string());
+        message.push_str(" / ");
+        message.push_str(&process_state_to_str(&process_status.state));
+        message.push_str("]: ");
+        message.push_str(&process_status.name);
+        message.push_str(", threads: ");
+        message.push_str(&process_status.threads.to_string());
+        message.push_str(", cpu_load: ");
+        message.push_str(&cpu_load);
         message.push_str("\n");
     }
 
@@ -41,5 +56,13 @@ fn get_processes() -> HashMap<PathBuf, f64> {
     }
 
     most_active_processes
+}
+
+fn get_process_status(path : String) -> ProcessStatus {
+    let full_path = path + "/status";
+    let content = read_file(&full_path);
+
+    let lines = content.split("\n").map(|l| l.to_string()).collect();
+    status_parser::parse(&lines)
 }
 
