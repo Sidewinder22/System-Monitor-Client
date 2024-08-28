@@ -17,7 +17,7 @@ lazy_static! {
     static ref STATE_REGEX: Regex = Regex::new(STATE_REGEX_STR).unwrap();
 }
 
-pub fn parse(lines: &[String]) -> ProcessStatus {
+pub fn parse(lines: &Vec<String>) -> ProcessStatus {
 
     let mut pid: Option<u32> = None;
     let mut name: Option<String> = None;
