@@ -5,7 +5,6 @@ use crate::fs::reader::read_file;
 
 use super::process_load_calculator::ProcessLoadCalculator;
 use super::paths::get_paths;
-use super::state::process_state_to_str;
 use super::status::ProcessStatus;
 use super::status_parser;
 
@@ -24,7 +23,7 @@ pub fn get_info_about_processes() -> String {
         message.push_str("[");
         message.push_str(&process_status.pid.to_string());
         message.push_str(" / ");
-        message.push_str(&process_state_to_str(&process_status.state));
+        message.push_str(&process_status.state.to_string());
         message.push_str("]: ");
         message.push_str(&process_status.name);
         message.push_str(", threads: ");

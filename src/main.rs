@@ -1,4 +1,4 @@
-use network::connection::start_server;
+use network::tcp_client;
 
 pub mod fs;
 pub mod network;
@@ -7,8 +7,6 @@ pub mod tools;
 fn main() -> std::io::Result<()> {
 
     println!("### System Monitor Client ###");
-
-    start_server().expect("Server error");
-
+    tcp_client::start().expect("Client error");
     Ok(())
 }
