@@ -1,3 +1,4 @@
+use std::fmt;
 use std::str::FromStr;
 
 #[derive(PartialEq, Debug)]
@@ -33,16 +34,18 @@ impl FromStr for ProcessState {
     }
 }
 
-pub fn process_state_to_str(process_state : &ProcessState) -> String {
-    match process_state {
-        ProcessState::R => String::from("R"),
-        ProcessState::S => String::from("S"),
-        ProcessState::D => String::from("D"),
-        ProcessState::Z => String::from("Z"),
-        ProcessState::T => String::from("T"),
-        ProcessState::t => String::from("t"),
-        ProcessState::X => String::from("X"),
-        ProcessState::I => String::from("I"),
-        ProcessState::Unknown => String::from("Unknown"),
+impl fmt::Display for ProcessState {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write!(f, "{}",
+            match self {
+                ProcessState::R => String::from("R"),
+                ProcessState::S => String::from("S"),
+                ProcessState::D => String::from("D"),
+                ProcessState::Z => String::from("Z"),
+                ProcessState::T => String::from("T"),
+                ProcessState::t => String::from("t"),
+                ProcessState::X => String::from("X"),
+                ProcessState::I => String::from("I"),
+                ProcessState::Unknown => String::from("Unknown")})
     }
 }

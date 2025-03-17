@@ -6,8 +6,9 @@ use std::thread::sleep;
 use crate::fs::process::service::get_info_about_processes;
 
 const IP : &str = "127.0.0.1";
+// const IP : &str = "0.0.0.0";
 const PORT : u32 = 9999;
-const DELAY: u64 = 2;
+const DELAY: u64 = 3;
 
 pub fn start_server() -> io::Result<()> {
     let connection_settings = format!("{}:{}", IP, PORT.to_string());
