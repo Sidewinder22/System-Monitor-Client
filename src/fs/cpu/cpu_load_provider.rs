@@ -40,8 +40,9 @@ impl CpuLoadProvider {
         let cpu_utilization = (work_over_period as f64 / total_work_over_period as f64) * 100.0;
 
         self.previous_cpu_load = cpu_load;
-
-        format!("CPU_AVERAGE_LOAD: {} END", cpu_utilization)
+        
+        let result = (cpu_utilization * 100.0).round() / 100.0;
+        format!("CPU_AVERAGE_LOAD: {} \n", result)
     }
 
     pub fn get_total_cpu_work() -> u64 {

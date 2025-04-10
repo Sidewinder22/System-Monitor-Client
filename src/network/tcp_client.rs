@@ -5,14 +5,15 @@ use std::time::Duration;
 use std::thread::sleep;
 
 use crate::fs::process::service::get_info_about_processes;
+use crate::fs::cpu::average_load::get_average_load;
+use crate::fs::cpu::cpu_load_provider::CpuLoadProvider;
 
-const IP : &str = "127.0.0.1";
-// const IP : &str = "0.0.0.0";
+const SERVER_IP_ADDRESS : &str = "192.168.1.17";
 const PORT : u32 = 9999;
 const DELAY: u64 = 3;
 
 pub fn start() -> std::io::Result<()> {
-    let connection_settings = format!("{}:{}", IP, PORT.to_string());
+    let connection_settings = format!("{}:{}", SERVER_IP_ADDRESS, PORT.to_string());
     let mut stream = TcpStream::connect(connection_settings)?;
     println!("Connected to server!");
 
@@ -25,8 +26,12 @@ pub fn start() -> std::io::Result<()> {
         }
     }
 
+    let mut cpu_load_provider = CpuLoadProvider::new();
     loop {
-        let info = get_info_about_processes();
+        let mut info : String = cpu_load_provider.get_cpu_average_load();
+        info += &get_average_load();
+        info += &get_info_about_processes();
+        
         let result = stream.write(info.as_bytes());
         match result {
             Ok(_) => {},
